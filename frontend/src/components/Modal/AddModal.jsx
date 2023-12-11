@@ -18,7 +18,6 @@ const AddModal = ({ finalRef, isOpen, onClose, goToPage }) => {
             ...data
         }
         mutate(values);
-        console.log(values)
         onClose();
         goToPage('bekleyentalepler');
     };

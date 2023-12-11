@@ -39,7 +39,7 @@ const Panel = () => {
                     <Box mb={2}>
                         <Button onClick={() => goToPage("kapanmisislemler")} leftIcon={<LuCheck size={24} />} colorScheme='green' w="100%">Kapanmış İşlemler</Button>
                     </Box>
-                    <Box>
+                    <Box visibility={slug === "bcakir" ? "hidden" : "visible"}>
                         <Button onClick={onOpen} leftIcon={<FiPlus size={24} />} colorScheme='twitter' w="100%">Yeni Talep Oluştur</Button>
                     </Box>
                 </Box>

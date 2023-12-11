@@ -68,6 +68,17 @@ app.get("/talep/:id", (req, res) => {
     );
 });
 
+app.get("/talep", (req, res) => {
+    const { id } = req.params;
+    connection.query(
+        'SELECT * from kullanicilar INNER JOIN talepler ON talepler.talep_eden_id = kullanicilar.id',
+        [id],
+        function (err, results, fields) {
+            res.send(results);
+        }
+    );
+});
+
 app.post("/talep", (req, res) => {
     try {
         const { talep_eden_id, talep_turu, aciklama } = req.body;
