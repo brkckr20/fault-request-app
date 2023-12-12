@@ -71,7 +71,7 @@ app.get("/talep/:id", (req, res) => {
 app.get("/talep", (req, res) => {
     const { id } = req.params;
     connection.query(
-        'SELECT * from kullanicilar INNER JOIN talepler ON talepler.talep_eden_id = kullanicilar.id',
+        'SELECT *,TIMEDIFF(talep_cevap_tarihi,talep_alinma_tarihi) AS zaman_farki from kullanicilar INNER JOIN talepler ON talepler.talep_eden_id = kullanicilar.id',
         [id],
         function (err, results, fields) {
             res.send(results);
@@ -80,7 +80,7 @@ app.get("/talep", (req, res) => {
 });
 app.get("/talepler", (req, res) => {
     connection.query(
-        'SELECT * from kullanicilar INNER JOIN talepler ON talepler.talep_eden_id = kullanicilar.id',
+        'SELECT *,TIMEDIFF(talep_cevap_tarihi,talep_alinma_tarihi) AS zaman_farki from kullanicilar INNER JOIN talepler ON talepler.talep_eden_id = kullanicilar.id',
         function (err, results, fields) {
             res.send(results);
         }
