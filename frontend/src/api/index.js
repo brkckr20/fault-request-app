@@ -17,3 +17,17 @@ export const getRequest = async () => {
     const { data } = axios.get(`${API}/talep/${userID}`);
     return data;
 }
+
+export const getRequests = async () => {
+    const { data } = await axios.get(`${API}/talepler`);
+    return data;
+}
+
+export const putProcessingNotification = async (requestID) => {
+    const { data } = axios.put(`${API}/talep/i/${requestID}`);
+    return data;
+}
+export const putProcessing = async (values) => {
+    const { data } = axios.put(`${API}/talep/ix`, values);
+    return data;
+}

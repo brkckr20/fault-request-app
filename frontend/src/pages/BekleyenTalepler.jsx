@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Table, Thead, Tbody, Tr, Th, Td, TableCaption, TableContainer, Heading, Button, useDisclosure } from '@chakra-ui/react'
+import { Box, Table, Thead, Tbody, Tr, Th, Td, TableCaption, TableContainer, Heading, Button, useDisclosure, Tfoot } from '@chakra-ui/react'
 import axios from 'axios'
 import { API, getUserId } from '../config'
 import { CiEdit } from "react-icons/ci";
@@ -40,18 +40,19 @@ const BekleyenTalepler = ({ kullaniciID }) => {
                     </Thead>
                     <Tbody>
                         {
-                            talepler.map((item, i) => (
+                            talepler.filter(x => x.durum !== "Tamamlandı").map((item, i) => (
                                 <Tr key={i}>
                                     <Td>{item.talep_turu}</Td>
                                     <Td>{item.aciklama}</Td>
-                                    <Td>Bekleniyor</Td>
+                                    <Td>{item.durum}</Td>
                                     {
                                         userID == 1 ? (
                                             <React.Fragment>
                                                 <Td>
                                                     {item.kullanici_adi}
-                                                </Td><Td>
-                                                    <Button size="sm" onClick={() => {
+                                                </Td>
+                                                <Td>
+                                                    <Button size="xs" onClick={() => {
                                                         setSecilenTalep(item.id);
                                                         onOpen()
                                                     }} colorScheme='green'><CiEdit size={22} /></Button>
@@ -63,6 +64,21 @@ const BekleyenTalepler = ({ kullaniciID }) => {
                             ))
                         }
                     </Tbody>
+                    <Tfoot backgroundColor="green" color="white">
+                        <Tr>
+                            <Td>Bekleyen Toplam : </Td>
+                            <Td>{talepler.filter(x => x.durum !== "Tamamlandı").length}</Td>
+                            <Td></Td>
+                            {
+                                userID == 1 ? (
+                                    <React.Fragment>
+                                        <Td></Td>
+                                        <Td></Td>
+                                    </React.Fragment>
+                                ) : null
+                            }
+                        </Tr>
+                    </Tfoot>
                 </Table>
             </TableContainer>
         </Box>

@@ -3,21 +3,28 @@ import { Flex, Box, Heading, Button, useDisclosure } from '@chakra-ui/react';
 import { FiPlus } from "react-icons/fi";
 import { LuCheck } from "react-icons/lu";
 import { CiStopwatch } from "react-icons/ci";
+import { IoLogOutOutline } from "react-icons/io5";
 import AddModal from '../components/Modal/AddModal';
 import BekleyenTalepler from './BekleyenTalepler';
 import KapanmisIslemler from './KapanmisIslemler';
 import axios from 'axios';
 import { API } from '../config';
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 
 const Panel = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [aktifPencere, setAktifPencere] = React.useState("bekleyentalepler");
     const finalRef = React.useRef(null);
+    const navigate = useNavigate();
     const { slug } = useParams();
     const [kullaniciAdi, setKullaniciAdi] = React.useState("");
     const goToPage = (pageName) => {
         setAktifPencere(pageName);
+    }
+
+    const handleLogout = () => {
+        localStorage.removeItem('n-user');
+        navigate("/");
     }
 
     React.useState(() => {
@@ -39,8 +46,11 @@ const Panel = () => {
                     <Box mb={2}>
                         <Button onClick={() => goToPage("kapanmisislemler")} leftIcon={<LuCheck size={24} />} colorScheme='green' w="100%">Kapanmış İşlemler</Button>
                     </Box>
-                    <Box visibility={slug === "bcakir" ? "hidden" : "visible"}>
+                    <Box mb={2} display={slug === "bcakir" ? "none" : "block"}>
                         <Button onClick={onOpen} leftIcon={<FiPlus size={24} />} colorScheme='twitter' w="100%">Yeni Talep Oluştur</Button>
+                    </Box>
+                    <Box mb={2}>
+                        <Button onClick={handleLogout} leftIcon={<IoLogOutOutline size={24} />} colorScheme='red' w="100%">Çıkış Yap</Button>
                     </Box>
                 </Box>
                 <Box bg="white" w="100%">

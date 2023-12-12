@@ -78,6 +78,14 @@ app.get("/talep", (req, res) => {
         }
     );
 });
+app.get("/talepler", (req, res) => {
+    connection.query(
+        'SELECT * from kullanicilar INNER JOIN talepler ON talepler.talep_eden_id = kullanicilar.id',
+        function (err, results, fields) {
+            res.send(results);
+        }
+    );
+});
 
 app.post("/talep", (req, res) => {
     try {
@@ -97,6 +105,34 @@ app.post("/talep", (req, res) => {
         console.log("Inserted error : " + error);
     }
 });
+
+app.put("/talep/i/:id", (req, res) => {
+    try {
+        const id = req.params.id;
+        connection.query(`UPDATE talepler SET durum='İsleme Alındı' where id = ?`,
+            [id],
+            function (err, results, fields) {
+                if (err) {
+                    console.log("Güncelleme sırasında hata")
+                }
+            })
+    } catch (error) {
+
+    }
+})
+app.put("/talep/ix", (req, res) => {
+    const { id, admin_aciklamasi, basariliMi } = req.body;
+    if (basariliMi) {
+        connection.query(`UPDATE talepler SET admin_aciklamasi=?, durum='Tamamlandı', talep_cevap_tarihi=? where id =?`,
+            [admin_aciklamasi, new Date(), id],
+            function (err, results, fields) {
+                if (err) {
+                    console.log("Güncelleme sırasında hata", err)
+                }
+            }
+        )
+    }
+})
 
 
 // Sunucu başlat
