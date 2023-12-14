@@ -1,17 +1,9 @@
 const http = require('http');
 const express = require('express');
 const socketIo = require('socket.io');
-const mysql = require('mysql2');
 const cors = require('cors');
 var bodyParser = require('body-parser')
-
-
-const connection = mysql.createConnection({
-    host: '127.0.0.1',
-    user: 'root',
-    port: 3306,
-    database: 'tekniktalep'
-});
+const connection = require("./database");
 
 const app = express();
 const server = http.createServer(app);
@@ -44,7 +36,7 @@ app.get("/kullanicilar", (req, res) => {
             res.send(results);
         }
     );
-})
+});
 
 app.get("/kullanici/:username", (req, res) => {
     const { username } = req.params;
@@ -68,16 +60,16 @@ app.get("/talep/:id", (req, res) => {
     );
 });
 
-app.get("/talep", (req, res) => {
-    const { id } = req.params;
-    connection.query(
-        'SELECT *,TIMEDIFF(talep_cevap_tarihi,talep_alinma_tarihi) AS zaman_farki from kullanicilar INNER JOIN talepler ON talepler.talep_eden_id = kullanicilar.id',
-        [id],
-        function (err, results, fields) {
-            res.send(results);
-        }
-    );
-});
+// app.get("/talep/:id", (req, res) => {
+//     const { id } = req.params;
+//     connection.query(
+//         'SELECT *,TIMEDIFF(talep_cevap_tarihi,talep_alinma_tarihi) AS zaman_farki from kullanicilar INNER JOIN talepler ON talepler.talep_eden_id = kullanicilar.id',
+//         [id],
+//         function (err, results, fields) {
+//             res.send(results);
+//         }
+//     );
+// });
 app.get("/talepler", (req, res) => {
     connection.query(
         'SELECT *,TIMEDIFF(talep_cevap_tarihi,talep_alinma_tarihi) AS zaman_farki from kullanicilar INNER JOIN talepler ON talepler.talep_eden_id = kullanicilar.id',

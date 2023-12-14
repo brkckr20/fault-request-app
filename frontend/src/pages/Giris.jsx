@@ -1,8 +1,9 @@
 import React from 'react'
-import { Box, Select, Button, Heading } from '@chakra-ui/react'
+import { Box, Select, Button, Heading, Spinner } from '@chakra-ui/react'
 import { useNavigate } from "react-router-dom";
 import { useQuery } from 'react-query';
 import { getUsers } from '../api';
+import Loader from '../components/Loader';
 
 const Giris = () => {
     const navigate = useNavigate();
@@ -12,10 +13,10 @@ const Giris = () => {
         navigate("panel/" + slug);
     }
 
-    const { data, isLoading } = useQuery('todos', getUsers);
+    const { data, isLoading } = useQuery('kullanicilar', getUsers);
 
     if (isLoading) {
-        return <div>Yükleniyor</div>
+        return <Loader />
     }
 
     return (
