@@ -28,7 +28,7 @@ const InfoModal = ({ finalRef, isOpen, onClose, selectedRequest }) => {
                     </Box>
                     <Box borderBottom="1px solid #ececec">
                         <span>İşlem Süresi : </span>
-                        <span>{selectedRequest.zaman_farki} saat</span>
+                        <span>{selectedRequest.zaman_farki}</span>
                     </Box>
                 </ModalBody>
 

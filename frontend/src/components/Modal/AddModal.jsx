@@ -1,7 +1,7 @@
 import React from 'react'
 import { Modal, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalBody, Button, ModalFooter, Textarea, Select } from '@chakra-ui/react';
 import { talepTuru } from '../../data';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { postRequest } from '../../api';
 import { useForm } from "react-hook-form"
 import { getUserId } from '../../config';
@@ -9,8 +9,13 @@ import { getUserId } from '../../config';
 
 const AddModal = ({ finalRef, isOpen, onClose, goToPage }) => {
 
-    const { register, handleSubmit } = useForm()
-    const { mutate } = useMutation(postRequest);
+    const { register, handleSubmit } = useForm();
+    const { invalidateQueries } = useQueryClient();
+    const { mutate } = useMutation(postRequest, {
+        onSuccess: () => {
+            invalidateQueries("getRequests");
+        }
+    });
     const userID = getUserId();
     const onSubmit = (data) => {
         const values = {

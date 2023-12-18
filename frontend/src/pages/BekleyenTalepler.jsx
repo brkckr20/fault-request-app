@@ -1,20 +1,24 @@
 import React from 'react'
 import { Box, Table, Thead, Tbody, Tr, Th, Td, TableCaption, TableContainer, Heading, Button, useDisclosure, Tfoot } from '@chakra-ui/react'
-import axios from 'axios'
-import { API, getUserId } from '../config'
+import { getUserId } from '../config'
 import { CiEdit } from "react-icons/ci";
 import EditAdminModal from '../components/Modal/EditAdminModal';
+import { useQuery } from 'react-query'
+import { getRequests } from '../api';
+import Loader from '../components/Loader'
 
 
-const BekleyenTalepler = ({ kullaniciID }) => {
-    const [talepler, setTalepler] = React.useState([]);
+const BekleyenTalepler = () => {
     const [secilenTalep, setSecilenTalep] = React.useState(0);
     const userID = getUserId();
     const finalRef = React.useRef(null);
     const { isOpen, onOpen, onClose } = useDisclosure();
-    React.useEffect(() => {
-        userID === 1 ? axios.get(`${API}/talep`).then(({ data }) => setTalepler(data)) : axios.get(`${API}/talep/${kullaniciID}`).then(({ data }) => setTalepler(data));
-    }, [talepler])
+    const { data: taleplerData, isLoading } = useQuery("getRequests", getRequests);
+
+    if (isLoading) {
+        return <Loader />
+    }
+
     return (
         <Box p={2}>
             <EditAdminModal finalRef={finalRef} isOpen={isOpen} onClose={onClose} secilenTalep={secilenTalep} />
@@ -40,7 +44,7 @@ const BekleyenTalepler = ({ kullaniciID }) => {
                     </Thead>
                     <Tbody>
                         {
-                            talepler.filter(x => x.durum !== "Tamamlandı").map((item, i) => (
+                            taleplerData.filter(x => x.durum !== "Tamamlandı").map((item, i) => (
                                 <Tr key={i}>
                                     <Td>{item.talep_turu}</Td>
                                     <Td>{item.aciklama}</Td>
@@ -67,7 +71,7 @@ const BekleyenTalepler = ({ kullaniciID }) => {
                     <Tfoot backgroundColor="green" color="white">
                         <Tr>
                             <Td>Bekleyen Toplam : </Td>
-                            <Td>{talepler.filter(x => x.durum !== "Tamamlandı").length}</Td>
+                            <Td>{taleplerData.filter(x => x.durum !== "Tamamlandı").length}</Td>
                             <Td></Td>
                             {
                                 userID == 1 ? (

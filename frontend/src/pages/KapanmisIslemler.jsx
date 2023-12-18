@@ -4,6 +4,7 @@ import { useQuery } from 'react-query';
 import { getRequests } from '../api';
 import { getUserId } from '../config';
 import InfoModal from '../components/Modal/InfoModal';
+import Loader from '../components/Loader';
 
 const KapanmisIslemler = () => {
     const userID = getUserId();
@@ -18,10 +19,8 @@ const KapanmisIslemler = () => {
     }
 
     if (isLoading) {
-        return <div>Yükleniyor</div>
+        return <Loader />
     }
-
-    console.log(data);
 
     return (
         <Box p={2}>
