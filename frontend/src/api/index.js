@@ -4,7 +4,12 @@ import { API, getUserId } from "../config";
 const userID = getUserId();
 
 export const getUsers = async () => {
-    const { data } = await axios.get(`${API}/kullanicilar`);
+    const { data } = await axios.get(`${API}/users`);
+    return data;
+}
+
+export const login = async (values) => {
+    const { data } = await axios.post(`${API}/users/login`, values);
     return data;
 }
 
